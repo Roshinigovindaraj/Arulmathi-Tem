@@ -34,37 +34,11 @@ function FacebookIcon({ size = 17, ...props }) {
   )
 }
 
-function XIcon({ size = 17, ...props }) {
+function LinkedInIcon({ size = 17, ...props }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
-      <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function ThreadsIcon({ size = 17, ...props }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
-      <path
-        d="M17.3 10.8c-.35-4.05-2.55-6.18-6.12-6.18-4.13 0-6.8 3.02-6.8 7.4 0 4.6 2.77 7.36 7.22 7.36 3.8 0 6.18-1.94 6.18-4.78 0-2.3-1.58-3.64-4.8-4.05m0 0c-.46-.05-.95-.08-1.48-.08-2.06 0-3.2.83-3.2 2.24 0 1.25 1.02 2.1 2.56 2.1 1.93 0 2.84-1.25 2.12-4.26Z"
-        stroke="currentColor"
-        strokeWidth="1.65"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function YouTubeIcon({ size = 17, ...props }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
-      <path
-        d="M21 8.4a3.2 3.2 0 0 0-2.25-2.26C16.76 5.6 12 5.6 12 5.6s-4.76 0-6.75.54A3.2 3.2 0 0 0 3 8.4a33.4 33.4 0 0 0 0 7.2 3.2 3.2 0 0 0 2.25 2.26c1.99.54 6.75.54 6.75.54s4.76 0 6.75-.54A3.2 3.2 0 0 0 21 15.6a33.4 33.4 0 0 0 0-7.2Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-      />
-      <path d="m10.25 15.15 4.55-3.15-4.55-3.15v6.3Z" fill="currentColor" />
+      <path d="M6.2 9.2h3.1v9.7H6.2V9.2Zm1.55-4.7a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6Z" fill="currentColor" />
+      <path d="M11.1 9.2h2.95v1.33h.04c.41-.78 1.42-1.6 2.92-1.6 3.12 0 3.69 2.05 3.69 4.72v5.25h-3.08v-4.66c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.74H11.1V9.2Z" fill="currentColor" />
     </svg>
   )
 }
@@ -338,17 +312,19 @@ function FounderStoryModal({ isOpen, onClose }) {
 
 function SocialLinks() {
   const links = [
-    ['Instagram', InstagramIcon],
-    ['Facebook', FacebookIcon],
-    ['X', XIcon],
-    ['Threads', ThreadsIcon],
-    ['YouTube', YouTubeIcon],
+    ['Instagram', InstagramIcon, 'https://www.instagram.com/arulmathisilksofficial'],
+    ['Facebook', FacebookIcon, 'https://www.facebook.com/share/1EG2rWiHwa/'],
+    [
+      'LinkedIn',
+      LinkedInIcon,
+      'https://www.linkedin.com/in/arulmathi-silks-987769424?utm_source=share_via&utm_content=profile&utm_medium=member_android',
+    ],
   ]
 
   return (
     <div className="social-links" aria-label="Social links">
-      {links.map(([label, Icon]) => (
-        <a className="interactive" href="/" aria-label={label} key={label}>
+      {links.map(([label, Icon, href]) => (
+        <a className="interactive" href={href} aria-label={label} key={label} target="_blank" rel="noreferrer">
           <Icon size={17} strokeWidth={1.5} aria-hidden="true" />
         </a>
       ))}
