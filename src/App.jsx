@@ -1,0 +1,456 @@
+import { useEffect, useMemo, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  ArrowLeft,
+  ArrowDown,
+  Flower2,
+  Leaf,
+  Mail,
+  Play,
+  Sparkles,
+  X,
+} from 'lucide-react'
+import { LAUNCH_DATE, assets } from './siteConfig'
+import './App.css'
+
+function InstagramIcon({ size = 17, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <rect x="4" y="4" width="16" height="16" rx="5" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="3.7" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="16.9" cy="7.1" r="1" fill="currentColor" />
+    </svg>
+  )
+}
+
+function FacebookIcon({ size = 17, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M14 8.35h2.35V4.6c-.4-.06-1.78-.18-3.39-.18-3.35 0-5.65 2.04-5.65 5.79v3.26H4v4.18h3.31V24h4.18v-6.35h3.27l.52-4.18h-3.79v-2.84c0-1.21.34-2.28 2.51-2.28Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+function XIcon({ size = 17, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function ThreadsIcon({ size = 17, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M17.3 10.8c-.35-4.05-2.55-6.18-6.12-6.18-4.13 0-6.8 3.02-6.8 7.4 0 4.6 2.77 7.36 7.22 7.36 3.8 0 6.18-1.94 6.18-4.78 0-2.3-1.58-3.64-4.8-4.05m0 0c-.46-.05-.95-.08-1.48-.08-2.06 0-3.2.83-3.2 2.24 0 1.25 1.02 2.1 2.56 2.1 1.93 0 2.84-1.25 2.12-4.26Z"
+        stroke="currentColor"
+        strokeWidth="1.65"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function YouTubeIcon({ size = 17, ...props }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M21 8.4a3.2 3.2 0 0 0-2.25-2.26C16.76 5.6 12 5.6 12 5.6s-4.76 0-6.75.54A3.2 3.2 0 0 0 3 8.4a33.4 33.4 0 0 0 0 7.2 3.2 3.2 0 0 0 2.25 2.26c1.99.54 6.75.54 6.75.54s4.76 0 6.75-.54A3.2 3.2 0 0 0 21 15.6a33.4 33.4 0 0 0 0-7.2Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+      />
+      <path d="m10.25 15.15 4.55-3.15-4.55-3.15v6.3Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+const founderMessageTamil =
+  'ஒவ்வொரு பட்டிலும் ஒரு கதை இருக்கிறது. அந்தக் கதையை அழகாக நெய்து, உங்கள் வாழ்க்கையின் அழகான தருணங்களுடன் இணைப்பதே அருள்மதி சில்க்ஸின் பயணம்.'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.86, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+const stagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.13,
+      delayChildren: 0.18,
+    },
+  },
+}
+
+function useCountdown(targetDate) {
+  const targetTime = useMemo(() => new Date(targetDate).getTime(), [targetDate])
+  const [remaining, setRemaining] = useState(() => Math.max(0, targetTime - Date.now()))
+
+  useEffect(() => {
+    const updateRemaining = () => setRemaining(Math.max(0, targetTime - Date.now()))
+    updateRemaining()
+
+    const interval = window.setInterval(updateRemaining, 1000)
+    document.addEventListener('visibilitychange', updateRemaining)
+
+    return () => {
+      window.clearInterval(interval)
+      document.removeEventListener('visibilitychange', updateRemaining)
+    }
+  }, [targetTime])
+
+  const totalSeconds = Math.floor(remaining / 1000)
+
+  return {
+    isLive: remaining <= 0,
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor((totalSeconds % 86400) / 3600),
+    minutes: Math.floor((totalSeconds % 3600) / 60),
+    seconds: totalSeconds % 60,
+  }
+}
+
+function Header() {
+  return (
+    <motion.header
+      className="site-header"
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <a className="brand-mark interactive" href="/" aria-label="Arulmathi Silks home">
+        <img src={assets.logoImage} alt="Arulmathi Silks" />
+      </a>
+      <p>Pure Silk. Pure Heritage.</p>
+    </motion.header>
+  )
+}
+
+function HeroBackground() {
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const reducedMotion = useReducedMotion()
+
+  useEffect(() => {
+    if (reducedMotion || window.matchMedia('(pointer: coarse)').matches) return undefined
+
+    const handlePointerMove = (event) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 16
+      const y = (event.clientY / window.innerHeight - 0.5) * 10
+      setPosition({ x, y })
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    return () => window.removeEventListener('pointermove', handlePointerMove)
+  }, [reducedMotion])
+
+  return (
+    <div className="hero-background" aria-hidden="true">
+      <motion.img
+        src={assets.heroImage}
+        alt=""
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+        animate={reducedMotion ? false : { x: position.x, y: position.y, scale: 1.025 }}
+        transition={{ type: 'spring', stiffness: 50, damping: 24, mass: 0.7 }}
+      />
+      <div className="overlay overlay-left" />
+      <div className="overlay overlay-bottom" />
+      <div className="overlay overlay-vignette" />
+    </div>
+  )
+}
+
+function AtmosphericGlow() {
+  return (
+    <div className="atmosphere" aria-hidden="true">
+      <span className="glow glow-one" />
+      <span className="glow glow-two" />
+      <span className="light-speck speck-one" />
+      <span className="light-speck speck-two" />
+      <span className="light-speck speck-three" />
+    </div>
+  )
+}
+
+function BrandValues() {
+  const values = [
+    { number: '01', title: 'Authentic', subtitle: 'Pure Silks', Icon: Flower2 },
+    { number: '02', title: 'Heritage', subtitle: 'Weaves', Icon: Sparkles },
+    { number: '03', title: 'Timeless', subtitle: 'Elegance', Icon: Leaf },
+  ]
+
+  return (
+    <motion.div className="brand-values" variants={fadeUp}>
+      {values.map(({ number, title, subtitle, Icon }) => (
+        <div className="brand-value" key={number}>
+          <span>{number}</span>
+          <Icon aria-hidden="true" strokeWidth={1.25} />
+          <strong>{title}</strong>
+          <em>{subtitle}</em>
+        </div>
+      ))}
+    </motion.div>
+  )
+}
+
+function Countdown() {
+  const countdown = useCountdown(LAUNCH_DATE)
+  const units = [
+    ['Days', countdown.days],
+    ['Hours', countdown.hours],
+    ['Minutes', countdown.minutes],
+    ['Seconds', countdown.seconds],
+  ]
+
+  return (
+    <motion.section className="countdown" variants={fadeUp} aria-label="Launch countdown">
+      <p className="section-kicker">Launching In</p>
+      {countdown.isLive ? (
+        <motion.div
+          className="live-state"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7 }}
+        >
+          Now Open
+        </motion.div>
+      ) : (
+        <div className="countdown-grid">
+          {units.map(([label, value]) => (
+            <div className="countdown-tile interactive" key={label}>
+              <strong aria-label={`${value} ${label}`}>{String(value).padStart(2, '0')}</strong>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </motion.section>
+  )
+}
+
+function FounderMessage() {
+  const [isOpen, setIsOpen] = useState(false)
+  const closeStory = () => {
+    setIsOpen(false)
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  }
+
+  return (
+    <>
+      <motion.aside className="founder-panel" variants={fadeUp}>
+        <div className="founder-media">
+          <video src={assets.founderVideo} muted playsInline preload="metadata" />
+        </div>
+        <div className="founder-copy">
+          <p className="section-kicker">A Message From Our Founder</p>
+          <blockquote lang="ta">{founderMessageTamil}</blockquote>
+          <div className="founder-actions">
+            <button
+              className="story-trigger interactive"
+              type="button"
+              onClick={() => setIsOpen(true)}
+              aria-label="Open founder story"
+            >
+              <span>
+                <Play size={16} fill="currentColor" aria-hidden="true" />
+              </span>
+              Our Story
+            </button>
+            <p>Founder, Arulmathi Silks</p>
+          </div>
+        </div>
+      </motion.aside>
+      <FounderStoryModal isOpen={isOpen} onClose={closeStory} />
+    </>
+  )
+}
+
+function FounderStoryModal({ isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return undefined
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+
+    document.body.classList.add('modal-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.classList.remove('modal-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, onClose])
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="story-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Founder story"
+          initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+          animate={{ opacity: 1, backdropFilter: 'blur(18px)' }}
+          exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          onClick={onClose}
+        >
+          <button className="modal-close interactive" type="button" onClick={onClose} aria-label="Close story">
+            <X size={22} aria-hidden="true" />
+          </button>
+          <motion.div
+            className="story-shell"
+            initial={{ opacity: 0, scale: 0.94, y: 24, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.96, y: 12, filter: 'blur(8px)' }}
+            transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button className="story-back interactive" type="button" onClick={onClose}>
+              <ArrowLeft size={16} aria-hidden="true" />
+              Back Home
+            </button>
+            <video src={assets.founderVideo} controls autoPlay playsInline />
+            <div>
+              <p className="section-kicker">Arulmathi Silks</p>
+              <h2>Heritage, held in every thread.</h2>
+              <p lang="ta">{founderMessageTamil}</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
+function SocialLinks() {
+  const links = [
+    ['Instagram', InstagramIcon],
+    ['Facebook', FacebookIcon],
+    ['X', XIcon],
+    ['Threads', ThreadsIcon],
+    ['YouTube', YouTubeIcon],
+  ]
+
+  return (
+    <div className="social-links" aria-label="Social links">
+      {links.map(([label, Icon]) => (
+        <a className="interactive" href="/" aria-label={label} key={label}>
+          <Icon size={17} strokeWidth={1.5} aria-hidden="true" />
+        </a>
+      ))}
+    </div>
+  )
+}
+
+function EmailNotify() {
+  return (
+    <form className="notify-form" onSubmit={(event) => event.preventDefault()}>
+      <label className="sr-only" htmlFor="notify-email">
+        Email address
+      </label>
+      <Mail size={16} aria-hidden="true" />
+      <input id="notify-email" type="email" placeholder="Enter your email address" autoComplete="email" />
+      <button className="interactive" type="submit">
+        Notify Me
+      </button>
+    </form>
+  )
+}
+
+function FooterBar() {
+  return (
+    <footer className="footer-bar">
+      <div className="footer-social">
+        <p>Stay Connected</p>
+        <SocialLinks />
+      </div>
+      <EmailNotify />
+    </footer>
+  )
+}
+
+function CustomCursor() {
+  const [cursor, setCursor] = useState({ x: -100, y: -100, active: false })
+  const reducedMotion = useReducedMotion()
+
+  useEffect(() => {
+    if (reducedMotion || window.matchMedia('(pointer: coarse)').matches) return undefined
+
+    const handlePointerMove = (event) => {
+      const target = event.target
+      const active = target instanceof Element && Boolean(target.closest('.interactive, button, a, input'))
+      setCursor({ x: event.clientX, y: event.clientY, active })
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    return () => window.removeEventListener('pointermove', handlePointerMove)
+  }, [reducedMotion])
+
+  if (reducedMotion) return null
+
+  return (
+    <motion.div
+      className={`custom-cursor ${cursor.active ? 'is-active' : ''}`}
+      animate={{ x: cursor.x, y: cursor.y }}
+      transition={{ type: 'spring', stiffness: 650, damping: 38, mass: 0.35 }}
+      aria-hidden="true"
+    />
+  )
+}
+
+function HeroContent() {
+  return (
+    <motion.main className="hero-content" variants={stagger} initial="hidden" animate="show">
+      <motion.p className="eyebrow" variants={fadeUp}>
+        We Are Weaving Something
+      </motion.p>
+      <motion.h1 variants={fadeUp}>
+        <span>Timeless Beauty</span>
+        <em>Coming Soon</em>
+      </motion.h1>
+      <motion.p className="hero-copy" variants={fadeUp}>
+        Our website is under construction. We are crafting a richer, more elegant experience for
+        you.
+      </motion.p>
+      <BrandValues />
+      <Countdown />
+      <FounderMessage />
+      <FooterBar />
+    </motion.main>
+  )
+}
+
+function LuxuryComingSoon() {
+  return (
+    <div className="luxury-page">
+      <HeroBackground />
+      <AtmosphericGlow />
+      <Header />
+      <HeroContent />
+      <CustomCursor />
+      <div className="mobile-scroll" aria-hidden="true">
+        <ArrowDown size={15} />
+      </div>
+    </div>
+  )
+}
+
+function App() {
+  return <LuxuryComingSoon />
+}
+
+export default App
