@@ -158,9 +158,9 @@ function AtmosphericGlow() {
 
 function BrandValues() {
   const values = [
-    { number: '01', title: 'Authentic', subtitle: 'Pure Silks', Icon: Flower2 },
-    { number: '02', title: 'Heritage', subtitle: 'Weaves', Icon: Sparkles },
-    { number: '03', title: 'Timeless', subtitle: 'Elegance', Icon: Leaf },
+    { number: '', title: 'Authentic', subtitle: 'Pure Silks', Icon: Flower2 },
+    { number: '', title: 'Heritage', subtitle: 'Weaves', Icon: Sparkles },
+    { number: '', title: 'Timeless', subtitle: 'Elegance', Icon: Leaf },
   ]
 
   return (
@@ -238,11 +238,11 @@ function FounderMessage() {
               aria-label="Open founder story"
             >
               <span>
-                <Play size={16} fill="currentColor" aria-hidden="true" />
+                <Play size={17} fill="currentColor" aria-hidden="true" />
               </span>
               Our Story
             </button>
-            <p>Founder, Arulmathi Silks</p>
+            <p>Founder, <b>Ponnuvel C</b></p>
           </div>
         </div>
       </motion.aside>
