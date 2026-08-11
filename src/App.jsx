@@ -43,6 +43,31 @@ function LinkedInIcon({ size = 17, ...props }) {
   )
 }
 
+function SilkMarkBadge() {
+  return (
+    <span className="nav-cert nav-cert-silk" aria-label="Silk Mark certification">
+      <svg viewBox="0 0 48 40" aria-hidden="true">
+        <path d="M9 25c2-15 12-18 18-8 6-10 16-7 18 8-5-4-11-4-15 1-2 2-4 4-7 4s-5-2-7-4c-4-5-9-5-15-1Z" />
+        <path d="M20 16c-1-8 1-12 7-14 6 2 8 6 7 14" />
+      </svg>
+      <b>Silk Mark</b>
+    </span>
+  )
+}
+
+function HandloomMarkBadge() {
+  return (
+    <span className="nav-cert nav-cert-handloom" aria-label="Handloom Mark certification">
+      <svg viewBox="0 0 48 40" aria-hidden="true">
+        <path d="M8 35V16m8 19V7m8 28V3m8 32V7m8 28V16" />
+        <path d="M8 18c7 7 13 8 20 2 5-4 9-5 12-2" />
+        <path d="M8 27c7-7 13-8 20-2 5 4 9 5 12 2" />
+      </svg>
+      <b>Handloom Mark</b>
+    </span>
+  )
+}
+
 const founderMessageTamil =
   'ஒவ்வொரு பட்டிலும் ஒரு கதை இருக்கிறது. அந்தக் கதையை அழகாக நெய்து, உங்கள் வாழ்க்கையின் அழகான தருணங்களுடன் இணைப்பதே அருள்மதி சில்க்ஸின் பயணம்.'
 
@@ -63,6 +88,73 @@ const stagger = {
       delayChildren: 0.18,
     },
   },
+}
+
+function AnimatedLetters({ text }) {
+  return (
+    <em className="animated-letters" aria-label={text}>
+      {text.split('').map((letter, index) => (
+        <motion.span
+          aria-hidden="true"
+          className="animated-letter"
+          key={`${letter}-${index}`}
+          initial={{ opacity: 0, y: 34, rotateX: -72, filter: 'blur(7px)' }}
+          animate={{
+            opacity: [0, 1, 1, 0.72, 1],
+            y: [34, 0, 0, -6, 0],
+            rotateX: [-72, 0, 0, 8, 0],
+            filter: ['blur(7px)', 'blur(0px)', 'blur(0px)', 'blur(1px)', 'blur(0px)'],
+          }}
+          transition={{
+            delay: 0.7 + index * 0.045,
+            duration: 3.8,
+            ease: [0.22, 1, 0.36, 1],
+            repeat: Infinity,
+            repeatDelay: 1.6,
+            repeatType: 'loop',
+          }}
+        >
+          {letter === ' ' ? '\u00A0' : letter}
+        </motion.span>
+      ))}
+    </em>
+  )
+}
+
+function LuxuryLoader({ progress }) {
+  return (
+    <motion.div
+      className="luxury-loader"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, filter: 'blur(10px)' }}
+      transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+      role="status"
+      aria-label="Loading Arulmathi Silks"
+    >
+      <motion.img
+        src={assets.logoImage}
+        alt="Arulmathi Silks"
+        initial={{ opacity: 0, y: 18, scale: 0.94 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <motion.div className="loader-thread" aria-hidden="true">
+        <motion.span
+          initial={{ scaleX: 0, transformOrigin: 'left' }}
+          animate={{ scaleX: progress / 100 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </motion.div>
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.8 }}
+      >
+        Weaving Heritage
+        <span>{progress}%</span>
+      </motion.p>
+    </motion.div>
+  )
 }
 
 function useCountdown(targetDate) {
@@ -104,7 +196,13 @@ function Header() {
       <a className="brand-mark interactive" href="/" aria-label="Arulmathi Silks home">
         <img src={assets.logoImage} alt="Arulmathi Silks" />
       </a>
-      <p>Pure Silk. Pure Heritage.</p>
+      <div className="nav-right">
+        <div className="nav-certifications" aria-label="Certification marks">
+          <SilkMarkBadge />
+          <HandloomMarkBadge />
+        </div>
+        <p>Pure Silk. Pure Heritage.</p>
+      </div>
     </motion.header>
   )
 }
@@ -242,7 +340,10 @@ function FounderMessage() {
               </span>
               Our Story
             </button>
-            <p>Founder, <b>Ponnuvel C</b></p>
+            <p className="founder-signature">
+              <b>Ponnuvel C</b>
+              <span>Founder</span>
+            </p>
           </div>
         </div>
       </motion.aside>
@@ -396,7 +497,7 @@ function HeroContent() {
       </motion.p>
       <motion.h1 variants={fadeUp}>
         <span>Timeless Beauty</span>
-        <em>Coming Soon</em>
+        <AnimatedLetters text="Coming Soon" />
       </motion.h1>
       <motion.p className="hero-copy" variants={fadeUp}>
         Our website is under construction. We are crafting a richer, more elegant experience for
@@ -426,7 +527,68 @@ function LuxuryComingSoon() {
 }
 
 function App() {
-  return <LuxuryComingSoon />
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [loadingProgress, setLoadingProgress] = useState(8)
+
+  useEffect(() => {
+    let isCancelled = false
+    const mediaSources = [
+      { type: 'image', src: assets.logoImage },
+      { type: 'image', src: assets.heroImage },
+      { type: 'video', src: assets.founderVideo },
+    ]
+    let completed = 0
+
+    const markComplete = () => {
+      completed += 1
+      if (!isCancelled) {
+        setLoadingProgress(Math.min(96, Math.round((completed / mediaSources.length) * 88) + 8))
+      }
+    }
+
+    const loadMedia = ({ type, src }) =>
+      new Promise((resolve) => {
+        const done = () => {
+          markComplete()
+          resolve()
+        }
+
+        if (type === 'video') {
+          const video = document.createElement('video')
+          video.preload = 'metadata'
+          video.onloadedmetadata = done
+          video.onerror = done
+          video.src = src
+          video.load()
+          return
+        }
+
+        const image = new Image()
+        image.onload = done
+        image.onerror = done
+        image.src = src
+      })
+
+    const minimumIntro = new Promise((resolve) => window.setTimeout(resolve, 1800))
+    const maximumWait = new Promise((resolve) => window.setTimeout(resolve, 4200))
+
+    Promise.all([Promise.race([Promise.all(mediaSources.map(loadMedia)), maximumWait]), minimumIntro]).then(() => {
+      if (!isCancelled) {
+        setLoadingProgress(100)
+        setIsLoaded(true)
+      }
+    })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [])
+
+  return (
+    <AnimatePresence mode="wait">
+      {isLoaded ? <LuxuryComingSoon key="site" /> : <LuxuryLoader key="loader" progress={loadingProgress} />}
+    </AnimatePresence>
+  )
 }
 
 export default App
