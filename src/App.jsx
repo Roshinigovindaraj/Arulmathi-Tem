@@ -480,12 +480,12 @@ function App() {
   useEffect(() => {
     let isCancelled = false
     const timeouts = [
-      window.setTimeout(() => !isCancelled && setLoadingProgress(25), 300),
-      window.setTimeout(() => !isCancelled && setLoadingProgress(50), 700),
-      window.setTimeout(() => !isCancelled && setLoadingProgress(70), 1100),
-      window.setTimeout(() => !isCancelled && setLoadingProgress(90), 1500),
-      window.setTimeout(() => !isCancelled && setLoadingProgress(100), 1900),
-      window.setTimeout(() => !isCancelled && setIsLoaded(true), 2300),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(25), 800),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(50), 1800),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(70), 2800),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(90), 3900),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(100), 4700),
+      window.setTimeout(() => !isCancelled && setIsLoaded(true), 5200),
     ]
 
     return () => {
