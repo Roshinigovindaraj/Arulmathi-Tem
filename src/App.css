@@ -1433,13 +1433,16 @@ h1 > em {
   }
 
   .nav-mark-frame {
-    width: clamp(42px, 12vw, 56px);
-    height: 76px;
+    width: clamp(58px, 16vw, 78px);
+    height: clamp(58px, 16vw, 78px);
+    overflow: visible;
   }
 
   .nav-mark-frame img {
-    width: clamp(72px, 20vw, 92px);
-    transform: translate(-50%, -48%);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(-50%, -50%);
   }
 
   .mobile-menu {
