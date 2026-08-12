@@ -43,31 +43,6 @@ function LinkedInIcon({ size = 17, ...props }) {
   )
 }
 
-function SilkMarkBadge() {
-  return (
-    <span className="nav-cert nav-cert-silk" aria-label="Silk Mark certification">
-      <svg viewBox="0 0 48 40" aria-hidden="true">
-        <path d="M9 25c2-15 12-18 18-8 6-10 16-7 18 8-5-4-11-4-15 1-2 2-4 4-7 4s-5-2-7-4c-4-5-9-5-15-1Z" />
-        <path d="M20 16c-1-8 1-12 7-14 6 2 8 6 7 14" />
-      </svg>
-      <b>Silk Mark</b>
-    </span>
-  )
-}
-
-function HandloomMarkBadge() {
-  return (
-    <span className="nav-cert nav-cert-handloom" aria-label="Handloom Mark certification">
-      <svg viewBox="0 0 48 40" aria-hidden="true">
-        <path d="M8 35V16m8 19V7m8 28V3m8 32V7m8 28V16" />
-        <path d="M8 18c7 7 13 8 20 2 5-4 9-5 12-2" />
-        <path d="M8 27c7-7 13-8 20-2 5 4 9 5 12 2" />
-      </svg>
-      <b>Handloom Mark</b>
-    </span>
-  )
-}
-
 const founderMessageTamil =
   'ஒவ்வொரு பட்டிலும் ஒரு கதை இருக்கிறது. அந்தக் கதையை அழகாக நெய்து, உங்கள் வாழ்க்கையின் அழகான தருணங்களுடன் இணைப்பதே அருள்மதி சில்க்ஸின் பயணம்.'
 
@@ -122,6 +97,9 @@ function AnimatedLetters({ text }) {
 }
 
 function LuxuryLoader({ progress }) {
+  const knobOffset = 9 - progress * 0.18
+  const progressPosition = `calc(${progress}% + ${knobOffset}px)`
+
   return (
     <motion.div
       className="luxury-loader"
@@ -140,9 +118,15 @@ function LuxuryLoader({ progress }) {
       />
       <motion.div className="loader-thread" aria-hidden="true">
         <motion.span
-          initial={{ scaleX: 0, transformOrigin: 'left' }}
-          animate={{ scaleX: progress / 100 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ width: '9px' }}
+          animate={{ width: progressPosition }}
+          transition={{ duration: 0.82, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <motion.i
+          className="loader-knob"
+          initial={{ left: '9px' }}
+          animate={{ left: progressPosition }}
+          transition={{ duration: 0.82, ease: [0.22, 1, 0.36, 1] }}
         />
       </motion.div>
       <motion.p
@@ -196,11 +180,15 @@ function Header() {
       <a className="brand-mark interactive" href="/" aria-label="Arulmathi Silks home">
         <img src={assets.logoImage} alt="Arulmathi Silks" />
       </a>
+      <div className="nav-marks" aria-label="Silk Mark and Handloom Mark certifications">
+        <span className="nav-mark-frame">
+          <img src={assets.navImage1} alt="Handloom Mark" />
+        </span>
+        <span className="nav-mark-frame">
+          <img src={assets.navImage2} alt="Silk Mark" />
+        </span>
+      </div>
       <div className="nav-right">
-        <div className="nav-certifications" aria-label="Certification marks">
-          <SilkMarkBadge />
-          <HandloomMarkBadge />
-        </div>
         <p>Pure Silk. Pure Heritage.</p>
       </div>
     </motion.header>
@@ -238,6 +226,9 @@ function HeroBackground() {
       <div className="overlay overlay-left" />
       <div className="overlay overlay-bottom" />
       <div className="overlay overlay-vignette" />
+      <div className="mobile-scroll">
+        <ArrowDown size={15} />
+      </div>
     </div>
   )
 }
@@ -256,16 +247,16 @@ function AtmosphericGlow() {
 
 function BrandValues() {
   const values = [
-    { number: '', title: 'Authentic', subtitle: 'Pure Silks', Icon: Flower2 },
-    { number: '', title: 'Heritage', subtitle: 'Weaves', Icon: Sparkles },
-    { number: '', title: 'Timeless', subtitle: 'Elegance', Icon: Leaf },
+    { title: 'Authentic', subtitle: 'Pure Silks', Icon: Flower2 },
+    { title: 'Heritage', subtitle: 'Weaves', Icon: Sparkles },
+    { title: 'Timeless', subtitle: 'Elegance', Icon: Leaf },
   ]
 
   return (
     <motion.div className="brand-values" variants={fadeUp}>
-      {values.map(({ number, title, subtitle, Icon }) => (
-        <div className="brand-value" key={number}>
-          <span>{number}</span>
+      {values.map(({ title, subtitle, Icon }) => (
+        <div className="brand-value" key={title}>
+          <span aria-hidden="true" />
           <Icon aria-hidden="true" strokeWidth={1.25} />
           <strong>{title}</strong>
           <em>{subtitle}</em>
@@ -460,35 +451,6 @@ function FooterBar() {
   )
 }
 
-function CustomCursor() {
-  const [cursor, setCursor] = useState({ x: -100, y: -100, active: false })
-  const reducedMotion = useReducedMotion()
-
-  useEffect(() => {
-    if (reducedMotion || window.matchMedia('(pointer: coarse)').matches) return undefined
-
-    const handlePointerMove = (event) => {
-      const target = event.target
-      const active = target instanceof Element && Boolean(target.closest('.interactive, button, a, input'))
-      setCursor({ x: event.clientX, y: event.clientY, active })
-    }
-
-    window.addEventListener('pointermove', handlePointerMove)
-    return () => window.removeEventListener('pointermove', handlePointerMove)
-  }, [reducedMotion])
-
-  if (reducedMotion) return null
-
-  return (
-    <motion.div
-      className={`custom-cursor ${cursor.active ? 'is-active' : ''}`}
-      animate={{ x: cursor.x, y: cursor.y }}
-      transition={{ type: 'spring', stiffness: 650, damping: 38, mass: 0.35 }}
-      aria-hidden="true"
-    />
-  )
-}
-
 function HeroContent() {
   return (
     <motion.main className="hero-content" variants={stagger} initial="hidden" animate="show">
@@ -497,7 +459,7 @@ function HeroContent() {
       </motion.p>
       <motion.h1 variants={fadeUp}>
         <span>Timeless Beauty</span>
-        <AnimatedLetters text="Coming Soon" />
+        <AnimatedLetters text="Coming Soon . . ." />
       </motion.h1>
       <motion.p className="hero-copy" variants={fadeUp}>
         Our website is under construction. We are crafting a richer, more elegant experience for
@@ -514,73 +476,32 @@ function HeroContent() {
 function LuxuryComingSoon() {
   return (
     <div className="luxury-page">
+      <Header />
       <HeroBackground />
       <AtmosphericGlow />
-      <Header />
       <HeroContent />
-      <CustomCursor />
-      <div className="mobile-scroll" aria-hidden="true">
-        <ArrowDown size={15} />
-      </div>
     </div>
   )
 }
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [loadingProgress, setLoadingProgress] = useState(8)
+  const [loadingProgress, setLoadingProgress] = useState(0)
 
   useEffect(() => {
     let isCancelled = false
-    const mediaSources = [
-      { type: 'image', src: assets.logoImage },
-      { type: 'image', src: assets.heroImage },
-      { type: 'video', src: assets.founderVideo },
+    const timeouts = [
+      window.setTimeout(() => !isCancelled && setLoadingProgress(25), 300),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(50), 700),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(70), 1100),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(90), 1500),
+      window.setTimeout(() => !isCancelled && setLoadingProgress(100), 1900),
+      window.setTimeout(() => !isCancelled && setIsLoaded(true), 2300),
     ]
-    let completed = 0
-
-    const markComplete = () => {
-      completed += 1
-      if (!isCancelled) {
-        setLoadingProgress(Math.min(96, Math.round((completed / mediaSources.length) * 88) + 8))
-      }
-    }
-
-    const loadMedia = ({ type, src }) =>
-      new Promise((resolve) => {
-        const done = () => {
-          markComplete()
-          resolve()
-        }
-
-        if (type === 'video') {
-          const video = document.createElement('video')
-          video.preload = 'metadata'
-          video.onloadedmetadata = done
-          video.onerror = done
-          video.src = src
-          video.load()
-          return
-        }
-
-        const image = new Image()
-        image.onload = done
-        image.onerror = done
-        image.src = src
-      })
-
-    const minimumIntro = new Promise((resolve) => window.setTimeout(resolve, 1800))
-    const maximumWait = new Promise((resolve) => window.setTimeout(resolve, 4200))
-
-    Promise.all([Promise.race([Promise.all(mediaSources.map(loadMedia)), maximumWait]), minimumIntro]).then(() => {
-      if (!isCancelled) {
-        setLoadingProgress(100)
-        setIsLoaded(true)
-      }
-    })
 
     return () => {
       isCancelled = true
+      timeouts.forEach((timeout) => window.clearTimeout(timeout))
     }
   }, [])
 
