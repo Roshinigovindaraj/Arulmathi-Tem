@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ArrowDown,
   Flower2,
+  ChevronRight,
   Leaf,
   Mail,
   Play,
@@ -259,6 +260,7 @@ function BrandValues() {
           <Icon aria-hidden="true" strokeWidth={1.25} />
           <strong>{title}</strong>
           <em>{subtitle}</em>
+          <ChevronRight className="brand-value-arrow" size={20} strokeWidth={1.25} aria-hidden="true" />
         </div>
       ))}
     </motion.div>
