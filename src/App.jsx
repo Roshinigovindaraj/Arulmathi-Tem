@@ -2,9 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowLeft,
-  ArrowDown,
   Flower2,
-  ChevronRight,
   Leaf,
   Mail,
   Play,
@@ -226,9 +224,6 @@ function HeroBackground() {
       <div className="overlay overlay-left" />
       <div className="overlay overlay-bottom" />
       <div className="overlay overlay-vignette" />
-      <div className="mobile-scroll">
-        <ArrowDown size={15} />
-      </div>
     </div>
   )
 }
@@ -260,7 +255,6 @@ function BrandValues() {
           <Icon aria-hidden="true" strokeWidth={1.25} />
           <strong>{title}</strong>
           <em>{subtitle}</em>
-          <ChevronRight className="brand-value-arrow" size={20} strokeWidth={1.25} aria-hidden="true" />
         </div>
       ))}
     </motion.div>

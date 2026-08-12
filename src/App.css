@@ -293,8 +293,7 @@
 }
 
 .mobile-menu,
-.footer-tagline,
-.brand-value-arrow {
+.footer-tagline {
   display: none;
 }
 
@@ -916,10 +915,6 @@ h1 > em {
   line-height: 1.76;
 }
 
-.mobile-scroll {
-  display: none;
-}
-
 :focus-visible {
   outline: 1px solid var(--gold-light);
   outline-offset: 4px;
@@ -1332,22 +1327,6 @@ h1 > em {
     display: none;
   }
 
-  .mobile-scroll {
-    position: absolute;
-    top: auto;
-    bottom: 18px;
-    right: 22px;
-    z-index: 8;
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    color: var(--gold);
-    background: rgba(6, 5, 5, 0.35);
-  }
-
   .story-shell {
     grid-template-columns: 1fr;
     height: auto;
@@ -1401,15 +1380,27 @@ h1 > em {
     gap: 10px;
     overflow: visible;
     border-bottom: 0;
-    background: #080604;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: rgba(8, 6, 4, 0.34);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px) saturate(1.16);
+    -webkit-backdrop-filter: blur(20px) saturate(1.16);
   }
 
   .site-header::before,
   .site-header::after {
     display: none;
+  }
+
+  .site-header::after {
+    content: '';
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 0;
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(229, 196, 122, 0.75), transparent);
+    box-shadow: 0 0 10px rgba(200, 155, 74, 0.32);
   }
 
   .brand-mark {
@@ -1443,11 +1434,12 @@ h1 > em {
 
   .nav-mark-frame {
     width: clamp(42px, 12vw, 56px);
-    height: 54px;
+    height: 76px;
   }
 
   .nav-mark-frame img {
-    width: clamp(78px, 22vw, 102px);
+    width: clamp(72px, 20vw, 92px);
+    transform: translate(-50%, -48%);
   }
 
   .mobile-menu {
@@ -1509,7 +1501,7 @@ h1 > em {
     width: 100%;
     max-width: 100%;
     min-height: 96px;
-    grid-template-columns: 38px minmax(0, 1fr) 22px;
+    grid-template-columns: 38px minmax(0, 1fr);
     grid-template-rows: auto auto;
     column-gap: 13px;
     padding: 18px 20px;
@@ -1523,7 +1515,7 @@ h1 > em {
     display: none;
   }
 
-  .brand-value svg:not(.brand-value-arrow) {
+  .brand-value svg {
     grid-column: 1;
     grid-row: 1 / 3;
     width: 30px;
@@ -1533,15 +1525,6 @@ h1 > em {
   .brand-value strong,
   .brand-value em {
     grid-column: 2;
-  }
-
-  .brand-value-arrow {
-    display: block;
-    grid-column: 3;
-    grid-row: 1 / 3;
-    align-self: center;
-    justify-self: end;
-    color: var(--gold-light);
   }
 
   .brand-value + .brand-value {
