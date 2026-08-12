@@ -15,7 +15,7 @@
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: Inter, ui-sans-serif, system-ui, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --header-height: 88px;
+  --header-height: 104px;
   --desktop-gutter: clamp(32px, 5vw, 96px);
 }
 
@@ -249,7 +249,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px var(--desktop-gutter);
+  padding: 12px var(--desktop-gutter);
   pointer-events: none;
   isolation: isolate;
   overflow: hidden;
@@ -295,7 +295,7 @@
 .brand-mark {
   display: inline-flex;
   align-items: center;
-  width: clamp(180px, 14vw, 210px);
+  width: clamp(158px, 12vw, 180px);
   text-decoration: none;
 }
 
@@ -318,8 +318,8 @@
 
 .nav-mark-frame {
   position: relative;
-  width: clamp(62px, 5vw, 76px);
-  height: 68px;
+  width: clamp(56px, 4.5vw, 68px);
+  height: 56px;
   overflow: hidden;
   flex: 0 0 auto;
 }
@@ -328,7 +328,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: clamp(118px, 9vw, 138px);
+  width: clamp(104px, 8vw, 120px);
   max-width: none;
   height: auto;
   transform: translate(-50%, -50%);
@@ -360,7 +360,7 @@
   z-index: 5;
   min-height: 100svh;
   width: min(100%, 760px);
-  padding: clamp(118px, 13.2vh, 152px) 24px 0 var(--desktop-gutter);
+  padding: calc(var(--header-height) + clamp(36px, 4vh, 56px)) 24px 0 var(--desktop-gutter);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -688,7 +688,6 @@ h1 > em {
 }
 
 .social-links a,
-.modal-close,
 .vertical-progress button {
   display: inline-grid;
   place-items: center;
@@ -704,8 +703,6 @@ h1 > em {
 
 .social-links a:hover,
 .social-links a:focus-visible,
-.modal-close:hover,
-.modal-close:focus-visible,
 .vertical-progress button:hover {
   transform: translateY(-1px);
   border-color: var(--gold-light);
@@ -834,13 +831,6 @@ h1 > em {
   place-items: center;
   padding: 32px 5vw;
   background: rgba(6, 5, 5, 0.82);
-}
-
-.modal-close {
-  position: fixed;
-  top: 32px;
-  right: 36px;
-  z-index: 2;
 }
 
 .story-shell {
@@ -987,7 +977,6 @@ h1 > em {
 @media (max-width: 1439px) {
   .hero-content {
     width: min(100%, 690px);
-    padding-top: 12.5vh;
   }
 
   .nav-right {
@@ -1406,10 +1395,6 @@ h1 > em {
 
   .story-modal {
     padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
-  }
-
-  .modal-close {
-    display: none;
   }
 
   .story-shell div {

@@ -8,7 +8,6 @@ import {
   Mail,
   Play,
   Sparkles,
-  X,
 } from 'lucide-react'
 import { LAUNCH_DATE, assets } from './siteConfig'
 import './App.css'
@@ -374,9 +373,6 @@ function FounderStoryModal({ isOpen, onClose }) {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           onClick={onClose}
         >
-          <button className="modal-close interactive" type="button" onClick={onClose} aria-label="Close story">
-            <X size={22} aria-hidden="true" />
-          </button>
           <motion.div
             className="story-shell"
             initial={{ opacity: 0, scale: 0.94, y: 24, filter: 'blur(10px)' }}
@@ -454,9 +450,6 @@ function FooterBar() {
 function HeroContent() {
   return (
     <motion.main className="hero-content" variants={stagger} initial="hidden" animate="show">
-      <motion.p className="eyebrow" variants={fadeUp}>
-        We Are Weaving Something
-      </motion.p>
       <motion.h1 variants={fadeUp}>
         <span>Timeless Beauty</span>
         <AnimatedLetters text="Coming Soon . . ." />
